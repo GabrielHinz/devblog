@@ -1,0 +1,100 @@
+{% extends 'includes/main.html' %}
+{% block content %}
+<!-- Hero Section -->
+<header class="hero">
+	<div class="container">
+		<h1 class="hero-title">Bem-vindo ao {{profile.blog_name}}</h1>
+		<p class="hero-description">Compartilhando ideias e conhecimento sobre o mundo de tecnologia.<br>Não perca
+			nenhum post se inscrevendo abaixo!</p>
+		<form method="GET" action="/inscrever/" class="signup-form form-inline justify-content-center pt-3">
+			{% csrf_token %}
+			<div class="form-group">
+				<label class="sr-only" for="id_email">Seu E-mail</label>
+				<input type="email" id="id_email" name="email" class="form-control mr-md-1"
+					placeholder="Escreva seu e-mail">
+			</div>
+			<button type="submit" class="btn btn-primary">Inscrever</button>
+		</form>
+	</div>
+</header>
+
+<!-- Blog Section -->
+<section class="blog">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				{% if posts.count > 0 %}
+				{% for post in posts %}
+				<div class="card mb-4 border-0">
+					<div class="card-body d-flex">
+						<img src="{{ post.banner.url }}" alt="Profile Image" class="profile-image img-fluid mr-3"
+							style="width: 110px; height: 110px;">
+						<div>
+							<h5 class="card-title">{{ post.title }}</h5>
+							<p class="card-subtitle text-muted mb-2">{{ post.created }}</p>
+							<p class="card-text">{{ post.description|truncatechars:150 }}</p>
+							<a href="{% url 'post_detail' pk=post.pk %}" class="">
+								Leia mais
+								<i class="fas fa-arrow-right ml-2"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<hr>
+				{% endfor %}
+				<div class="text-center">
+					{% if page_obj.has_previous %}
+					<a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary">
+						<i class="fas fa-arrow-left mr-2"></i>Página Anterior
+					</a>
+					{% else %}
+					<a href="#" class="btn btn-primary disabled">
+						<i class="fas fa-arrow-left mr-2"></i>Página Anterior
+					</a>
+					{% endif %}
+
+					{% if page_obj.has_next %}
+					<a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary">
+						Próxima Página <i class="fas fa-arrow-right ml-2"></i>
+					</a>
+					{% else %}
+					<a href="#" class="btn btn-primary disabled">
+						Próxima Página <i class="fas fa-arrow-right ml-2"></i>
+					</a>
+					{% endif %}
+				</div>
+				{% else %}
+				<h2>Ainda não há posts por aqui :(</h2>
+				<p> Enquanto isso, que tal se inscrever na nossa lista para receber as novidades em primeira mão? Fique
+					por dentro dos próximos posts e não perca nenhum conteúdo interessante!</p>
+				{% endif %}
+			</div>
+			<div class="col-md-4">
+				<div class="mb-3">
+					<div class="card-body">
+						<h3 class="card-title text-center">Sobre Mim</h3>
+						<div class="profile-section text-center pt-3 pt-lg-0">
+							<img class="profile-image img-fluid mb-3 mx-auto d-block"
+								src="/media/{{ profile.profile_picture }}" alt="Profile Image">
+							<div class="mb-3">{{ profile.about_me|truncatechars:150 }}<br><a href="{% url 'about' %}">Ver mais</a></div>
+							<ul class="social-medias">
+								<li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+								<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+								<li class="list-inline-item"><a href="#"><i class="fab fa-github-alt"></i></a></li>
+								<li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+							</ul>
+							<hr>
+						</div>
+					</div>
+				</div>
+				<div class="card mb-4 border-0">
+					<div class="card-body text-center">
+						<h3 class="card-title">Sobre o Blog</h3>
+						<p class="card-text">{{ profile.blog_description|truncatechars:200 }}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

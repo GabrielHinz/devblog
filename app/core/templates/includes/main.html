@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {{ title }} - {{ profile.blog_name }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+    <div id="loader" class="loader-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navbar -->
+    {% include 'includes/navbar.html' %}
+
+    <!-- Content -->
+    {% block content %}{% endblock %}
+
+    <button id="toggle-mode" class="dark-mode-toggle" aria-label="Alternar Modo">
+        <i class="fas fa-lightbulb"></i>
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Footer -->
+    {% include 'includes/footer.html' %}
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    {% block scripts %}{% endblock %}
+
+    <script>
+        $(window).on('load', function () {
+            $('body').find('*').each(function () {
+                OldColor = 'rgb(0, 123, 255)'
+                NewColor = "{{ profile.blog_theme }}"
+                var background = $(this).css('background-color');
+                var color =  $(this).css('color')
+                if (background === OldColor) {
+                    $(this).css('background-color', NewColor);
+                    $(this).css('border-color', NewColor);
+                }
+                if (color === OldColor) {
+                    $(this).css('color', NewColor);
+                }
+            });
+
+        });
+        $(document).ready(function () {
+            setTimeout(function() {$('#loader').hide();}, 150);
+            $('#toggle-mode').click(function () {
+                $('body, .card, .card-title, .card-text, .hero, .hero-title, .hero-description, .btn, a').toggleClass('dark-mode');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

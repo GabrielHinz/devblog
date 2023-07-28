@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup - Configurações Iniciais </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        {% for error in errors %}
+            {% for field in error.values %}
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+                <div class="toast-header">
+                    <strong class="mr-auto">Mensagem</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                   {{ field }}
+                </div>
+            </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <header class="hero">
+        <div class="container">
+            <h1 class="hero-title">Bem-vindo, conclua o cadastro do seu Blog</h1>
+            <p class="hero-description">Utilize o formulário abaixo para configurar seu blog.</p>
+        </div>
+    </header>
+
+    <button id="toggle-mode" class="dark-mode-toggle" aria-label="Alternar Modo">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container mt-3 mb-5">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div id="wizard" class="wizard">
+                    <div class="wizard-header mb-3">
+                        <ul class="nav nav-pills d-none">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#step1" data-toggle="tab">Etapa 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#step2" data-toggle="tab">Etapa 2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#step3" data-toggle="tab">Etapa 3</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="step1">
+                                <h3 class="mb-3">Etapa 1: Configurações do Blog</h3>
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="id_blog_name">Nome do Blog</label>
+                                    <input type="text" name="blog_name" maxlength="100" class="form-control" required=""
+                                        id="id_blog_name" placeholder="Nome do blog">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_blog_description">Descrição do Blog</label>
+                                    <textarea class="form-control" id="id_blog_description" required
+                                        name="blog_description" placeholder="Breve descrição do blog"
+                                        rows="4"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="blog_theme">Tema do Blog</label>
+                                    {{ profileform.blog_theme }}
+                                </div>
+                                <div class="mt-4 row">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary next w-100">Próxima Etapa <i
+                                                class="fas fa-arrow-right ml-2"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="step2">
+                                <h3 class="mb-3">Etapa 2: Perfil do Criador</h3>
+                                <div class="form-group">
+                                    <label for="id_name">Nome do Autor</label>
+                                    <input type="text" name="name" maxlength="100" placeholder="Seu nome"
+                                        class="form-control" required="" id="id_name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_profile_picture">Foto do Autor</label>
+                                    {{ profileform.profile_picture }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_about_me">Descrição do Autor</label>
+                                    <textarea class="form-control" id="id_about_me" required name="about_me"
+                                        placeholder="Fale sobre você, quais sobre seus hobbies, gostos e o que te motiva a fazer o que faz."
+                                        rows="6"></textarea>
+                                </div>
+                                <div class="mt-4 row">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary prev w-100"><i
+                                                class="fas fa-arrow-left mr-2"></i> Etapa Anterior</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary next w-100">Próxima Etapa <i
+                                                class="fas fa-arrow-right ml-2"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="step3">
+                                <h3 class="mb-3">Etapa 3: Usuário e Senha </h3>
+                                <div class="form-group">
+                                    <label for="id_username">Nome de Usuário</label>
+                                    <input type="text" name="username" class="form-control" placeholder="gabriel"
+                                        required="" id="id_username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_username">Senha de Acesso</label>
+                                    <input type="password" name="password1" plachol class="form-control"
+                                        placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" required=""
+                                        id="id_password1">
+                                </div>
+                                <!--
+                                <h3 class="mb-3">Etapa 3: Meu Primeiro Post</h3>
+                                <div class="form-group">
+                                    <label for="id_title">Título do Post</label>
+                                    <input type="text" name="title" maxlength="200" class="form-control" placeholder="Meu Primeiro Post" required="" id="id_title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_title">Banner do Post</label>
+                                    {{ postform.banner }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_description">Descrição do Post</label>
+                                    <textarea class="form-control" id="id_description" required name="description"
+                                    placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dapibus ex non lectus auctor, nec fermentum odio scelerisque."
+                                    rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_title">Conteúdo do Post</label>
+                                    {{ postform.media }}
+                                    {{ postform.content }}
+                                </div>
+                                -->
+                                <div class="mt-4 row">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary prev w-100"><i
+                                                class="fas fa-arrow-left mr-2"></i> Etapa Anterior</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100">Salvar
+                                            Configurações</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
+    <script src="/static/js/setup.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#toggle-mode').click(function () {
+                $('body, .card, .card-title, .card-text, .hero, .hero-title, .hero-description, .btn, a').toggleClass('dark-mode');
+            });
+        });
+    </script>
+
+    <script>
+        var nextBtns = document.querySelectorAll('.next');
+        var prevBtns = document.querySelectorAll('.prev');
+        var tabs = document.querySelectorAll('.tab-pane');
+
+        nextBtns.forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                var currentTab = btn.closest('.tab-pane');
+                var nextTab = currentTab.nextElementSibling;
+                if (nextTab && validateRequiredFields(currentTab)) {
+                    currentTab.classList.remove('show', 'active');
+                    nextTab.classList.add('show', 'active');
+                }
+            });
+        });
+
+        prevBtns.forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                var currentTab = btn.closest('.tab-pane');
+                var prevTab = currentTab.previousElementSibling;
+                if (prevTab) {
+                    currentTab.classList.remove('show', 'active');
+                    prevTab.classList.add('show', 'active');
+                }
+            });
+        });
+
+        function validateRequiredFields(tab) {
+            var fields = tab.querySelectorAll('[required]');
+            var isValid = true;
+
+            fields.forEach(function (field) {
+                if (field.value.trim() === '') {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            return isValid;
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#id_blog_theme').change(function () {
+                var newColor = $(this).val();
+                var previousColor = $('.btn-primary').css('background-color');
+                $('body').find('*').each(function () {
+                    var color = $(this).css('background-color');
+                    if (color === previousColor) {
+                        $(this).css('background-color', newColor);
+                        $(this).css('border-color', newColor);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('.toast').toast({ delay: 2000 })
+            $('.toast').toast('show');
+        });
+    </script>
+
+    <script>
+        var options = document.querySelectorAll("option");
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].text === "---------") {
+                options[i].text = "Não Selecionado";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

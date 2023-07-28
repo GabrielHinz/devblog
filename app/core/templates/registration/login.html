@@ -1,0 +1,9 @@
+{% extends 'includes/main.html' %}
+{% block content %}
+<h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Entrar</button>
+    </form>
+{% endblock %}

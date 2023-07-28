@@ -1,0 +1,103 @@
+{% extends "includes/admin/main.html" %}
+{% block styles %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
+{% block content %}
+
+<h2>Dashboards</h2>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Posts</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ posttotal }}</h5>
+                    <p class="card-text">Quantidade de Posts</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Inscrições</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ subtotal }}</h5>
+                    <p class="card-text">Quantidade de Inscrições</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <canvas  id="postsChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas  id="subsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var labels = {{ labelschart|safe }};
+    var data = {{ datachart|safe }};
+
+    var chartConfig = {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Frequência de Posts',
+                data: data,
+                backgroundColor: "rgba(54, 162, 235, 0.2)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    };
+    var postsChart = new Chart(document.getElementById('postsChart'), chartConfig);
+</script>
+
+<script>
+     var labels = {{ sublabels|safe }};
+    var data = {{ subdata|safe }};
+
+    var chartConfig = {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Frequência de Inscrições',
+                data: data,
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    };
+    var postsChart = new Chart(document.getElementById('subsChart'), chartConfig);
+</script>
+{% endblock %}

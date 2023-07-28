@@ -1,0 +1,109 @@
+{% extends "includes/admin/main.html" %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+{% block content %}
+<table id="newsletterTable" class="table custom-table" ">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Email</th>
+            <th>Inscrito em</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in emails %}
+        <tr id=" row-{{ user.pk }}">
+    <td> <a href="#">{{ user.pk }}</a></td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.subscribed_at }}</td>
+    <td>
+        <a href="#" class="delete-btn" data-id="{{ user.pk }}"><i class="far fa-trash-alt"></i></a>
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script src=" https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js">
+</script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#newsletterTable').DataTable({
+            searching: true,
+            dom: 'Bfrtip',
+            className: "mb-5",
+            buttons: [
+                {
+                    extend: 'csv',
+                    text: 'Exportar CSV',
+                    className: 'btn btn-dark'
+                },
+            ]
+        });
+        $(".dt-buttons").addClass("mb-3");
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.delete-btn').on('click', function (e) {
+            e.preventDefault();
+            var postId = $(this).data('id');
+            var rowId = '#row-' + postId;
+
+            var modal = $('<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">' +
+                '<div class="modal-dialog" role="document">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<h5 class="modal-title" id="confirmModalLabel">Confirmação de exclusão</h5>' +
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>' +
+                '<div class="modal-body">' +
+                'Tem certeza de que deseja excluir este item?' +
+                '</div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>' +
+                '<button type="button" class="btn btn-danger" id="confirmDelete">Excluir</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+
+            $('body').append(modal);
+
+            $('#confirmDelete').click(function () {
+                $.ajax({
+                    url: `/admin/newsletter/deletar/${postId}/`,
+                    type: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        $(rowId).remove();
+                        $('#confirmModal').modal('hide');
+                        $('#confirmModal').remove();
+                        $('.modal-backdrop').remove();
+                    },
+                    error: function () {
+                        $('#confirmModal').modal('hide');
+                        $('#confirmModal').remove();
+                        $('.modal-backdrop').remove();
+                    }
+                });
+            });
+            $('#confirmModal').modal('show');
+        });
+    });
+</script>
+{% endblock %}

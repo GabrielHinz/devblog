@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <div class="logo-container">
+                <span class="logo-title">{{ profile.blog_name }}</span>
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item {% if menu == 'index' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item {% if menu == 'posts' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'posts' %}">Artigos</a>
+                </li>
+                <li class="nav-item {% if menu == 'about' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'about' %}">Sobre</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    {% if user.is_authenticated %}
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                         {{ profile.name }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="{% url 'admin' %}">Administrador</a>
+                        <a class="dropdown-item" href="{% url 'admin_perfil' %}">Configurações</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                    </div>
+                    {% else %}
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Acesso Restrito
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                        <form method="POST" action="{% url 'login' %}" class="px-4 py-3">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="user">Usuário:</label>
+                                <input type="text" class="form-control" required name="username" id="id_username"
+                                    placeholder="Usuário">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Senha:</label>
+                                <input type="password" class="form-control" required name="password" id="id_password"
+                                    placeholder="Senha">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-1 w-100">Entrar</button>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <!--<a class="dropdown-item" href="#">Esqueceu a senha?</a>-->
+                    </div>
+                    {% endif %}
+                </li>
+            </ul>
+            <!--<button class="btn btn-primary"><i class="fas fa-user mx-2"></i> Login</button>-->
+        </div>
+    </div>
+</nav>

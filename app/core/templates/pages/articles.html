@@ -1,0 +1,51 @@
+{% extends 'includes/main.html' %}
+{% block content %}
+<header class="hero">
+    <div class="container">
+        <h1 class="hero-title">Meus Artigos</h1>
+    </div>
+</header>
+
+<div class="container">
+    <div class="articles row mt-5 mb-5">
+        {% for post in posts %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                <img class="card-img-top" src="{{ post.banner.url }}" alt="Imagem do post">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-subtitle text-muted mb-2">{{ post.created }}</p>
+                    <p class="card-text">{{ post.description|truncatechars:120 }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-primary">Leia mais</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-right">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        {% else %}
+        <a href="#" class="btn btn-primary disabled">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        {% else %}
+        <a href="#" class="btn btn-primary disabled">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

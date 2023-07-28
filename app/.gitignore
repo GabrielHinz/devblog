@@ -1,0 +1,8 @@
+# Não enviar as imagens
+media/
+
+# Não enviar o banco de dados
+db.sqlite3
+
+# Ignorar o cache
+__pycache__/

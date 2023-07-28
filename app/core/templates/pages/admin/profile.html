@@ -1,0 +1,81 @@
+{% extends "includes/admin/main.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mx-auto">
+        <div id="wizard" class="wizard">
+            <div class="wizard-header mb-3">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#step1" data-toggle="tab">Básico</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#step2" data-toggle="tab">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#step3" data-toggle="tab">Redes Sociais</a>
+                    </li>
+                </ul>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="step1">
+                        <h3 class="mb-3">Informações Básicas</h3>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_blog_name">Nome do Blog</label>
+                            {{ form.blog_name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_blog_description">Descrição do Blog</label>
+                            {{ form.blog_description }}
+                        </div>
+                        <div class="form-group">
+                            <label for="blog_theme">Tema do Blog</label>
+                            {{ form.blog_theme }}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="step2">
+                        <h3 class="mb-3">Informações Básicas</h3>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.name.id_for_label }}">Nome</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.profile_picture.id_for_label }}">Foto de Perfil</label>
+                            {{ form.profile_picture }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.about_me.id_for_label }}">Sobre Mim</label>
+                            {{ form.about_me }}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="step3">
+                        <h3 class="mb-3">Redes Sociais</h3>
+                        <div class="form-group">
+                            <label for="{{ form.linkedin.id_for_label }}">LinkedIn</label>
+                            {{ form.linkedin }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.github.id_for_label }}">GitHub</label>
+                            {{ form.github }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.instagram.id_for_label }}">Instagram</label>
+                            {{ form.instagram }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.twitter.id_for_label }}">Twitter</label>
+                            {{ form.twitter }}
+                        </div>
+                    </div>
+                    <div class="mt-4 form-group ">
+                        <button type="submit" class="btn btn-primary w-100">Salvar
+                            Configurações</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

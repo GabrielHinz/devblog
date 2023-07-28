@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.blog_name }} - Painel Administrador</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    {% block styles %}{% endblock %}
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader"></div>
+    </div>
+        
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class=" flex-column flex-shrink-0 p-3 text-white bg-dark sidebar fixed-top d-none d-md-flex"
+            style="width: 280px; height: 100vh;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <span class="fs-4">{{ profile.blog_name }} Admin</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'admin' %}" class="nav-link text-white {% if menu == 'home' %}active{% endif %}" aria-current="page">
+                        <i class="fas fa-home mr-2" width="16" height="16"></i>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_posts' %}" class="nav-link text-white {% if menu == 'posts' %}active{% endif %}">
+                        <i class="fas fa-file-alt  mr-2" width="16" height="16"></i>
+                        Posts
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_newsletter' %}" class="nav-link text-white {% if menu == 'newsletter' %}active{% endif %}">
+                        <i class="fas fa-envelope  mr-2" width="16" height="16"></i>
+                        Inscrições
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_perfil' %}" class="nav-link text-white {% if menu == 'profile' %}active{% endif %}">
+                        <i class="fas fa-cog  mr-2" width="16" height="16"></i>
+                        Configurações
+                    </a>
+                </li>
+            </ul>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown dropup">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                    id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{{ profile.profile_picture.url}}" alt="" width="32" height="32"
+                        class="rounded-circle me-2">
+                    <strong class="ml-3">{{ profile.name }}</strong>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="{% url 'admin_posts_add' %}">Publicar</a>
+                    <a class="dropdown-item" href="{% url 'admin_perfil' %}">Editar Perfil</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <!-- Top Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">{{ profile.blog_name }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin_perfil' %}">Configurações</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- /Top Navigation -->
+
+            <div class="wrap-content">
+                <div class="card content col-md-10 col-sm-12 mx-auto">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    {% block scripts %}{% endblock %}
+
+    <script>
+        checkWindowWidth();
+
+        $(window).resize(function () {
+            checkWindowWidth();
+        });
+
+        function checkWindowWidth() {
+            var sidebarWidth = $('.sidebar').outerWidth();
+            var windowWidth = $(window).width();
+            var breakpoint = 800;
+
+            if (windowWidth < breakpoint) {
+                $('.wrap-content').css('margin-left', "0");
+            } else {
+                $('.wrap-content').css('margin-left', sidebarWidth);
+            }
+        }
+
+        $(document).ready(function () {
+            setTimeout(function() {$('#loader').hide();}, 150);
+        });
+    </script>
+</body>
+
+</html>
