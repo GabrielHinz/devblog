@@ -6,7 +6,7 @@
 		<h1 class="hero-title">Bem-vindo ao {{profile.blog_name}}</h1>
 		<p class="hero-description">Compartilhando ideias e conhecimento sobre o mundo de tecnologia.<br>Não perca
 			nenhum post se inscrevendo abaixo!</p>
-		<form method="GET" action="/inscrever/" class="signup-form form-inline justify-content-center pt-3">
+		<form method="POST" action="/inscrever/" class="signup-form form-inline justify-content-center pt-3">
 			{% csrf_token %}
 			<div class="form-group">
 				<label class="sr-only" for="id_email">Seu E-mail</label>
