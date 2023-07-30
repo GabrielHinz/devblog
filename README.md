@@ -24,6 +24,7 @@ Antes de rodar o projeto, certifique-se de ter os seguintes requisitos instalado
   ```shell
   ./deploy.sh
   ```
+   **Nota:** Utilize este script com o usuário root
 
 2. Verifique o container
 
